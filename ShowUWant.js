@@ -69,7 +69,7 @@ var css = "@namespace url(http://www.w3.org/1999/xhtml);";
     css += '#float_window.open:hover{background-color:#FCFCFC;}';
     css += '#float_window.open>#float_content{opacity:0.3;}';
     css += '#float_window.open:hover>#float_content{opacity:1;}';
-    css += 'div#body > a:not([name=""]){display:None;}';
+    css += 'div#body > a:not([name=""]){display:block;}';
 loadStyle(css);
 
 float_button.addEventListener('click',showmenu,false);
@@ -78,13 +78,13 @@ $(".next").addEventListener('click',function(){showPaper(cur_paper_index+1);},fa
 $(".view").addEventListener('click',function(){
     let targetPage = $("#SetPage").value;
     if(!/^[-,+]?\d+$/.test(targetPage)){
-        console.log("not integer");
+        alert("输入不是整数");
         return;
     }else if(targetPage < 1){
-        console.log("too small");
+        alert("数值太小");
         return;
     }else if(targetPage > maxPage){
-        console.log("too large");
+        alert("数值太大");
         return;
     }
     showPaper(+targetPage);
@@ -106,7 +106,7 @@ function showmenu(){
 function showPaper(index){
     if(index > 0){
         let curstyle = $("#ShowUWantStyle").innerText;
-        curstyle = curstyle.replace(/a:not\(\[name="\d*"\]\)/,'a:not([name="' + index + '"])');
+        curstyle = curstyle.replace(/a:not\(\[name="\d*"\]\)\{display:\w+/,'a:not([name="' + index + '"]){display:None;');
         $("#ShowUWantStyle").innerText = curstyle;
         cur_paper_index = index;
     }
