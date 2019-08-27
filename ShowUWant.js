@@ -16,7 +16,7 @@ function loadStyle(css){
 }
 function $(CssSelector){
 	'use script';
-	if(typeof id != 'undefined'){
+	if(typeof CssSelector != 'undefined'){
 		return document.querySelector(CssSelector);
 	}
 }
