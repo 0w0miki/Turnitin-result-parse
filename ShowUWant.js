@@ -23,10 +23,11 @@ function $(CssSelector){
 
 var isopen = false;
 var floatWindowWidthMax = 170;
-var floatWindowHeightMax = 72;
+var floatWindowHeightMax = 118;
 var floatWindowWidthMin = 14;
 var floatWindowHeightMin = 14;
 var cur_paper_index = 1;
+var cur_item_index = 0;
 var maxPage = document.querySelectorAll("div.links>div").length;
 
 //添加按钮
@@ -46,19 +47,25 @@ var box = '<div id = "score" ></div>';
     box += '<label>查看第</label>';
     box += '<input id = "SetPage" type="text" maxlength = 3></input>';
     box += '<label>篇</label>';
-    box += '<input class = "view btn" type="button" value="查看"/>';
+    box += '<button class = "view btn">查看</button>';
+    box += '</div>';
+    box += '<div>';
+    box += '<label>查看</label>';
+    box += '<button class = "preview paper btn">上一篇</button>';
+    box += '<button class = "next paper btn">下一篇</button>';
     box += '</div>';
     box += '<p></p>';
     box += '<div>';
-    box += '<input type = "button" class = "preview btn" value="上一篇"/>';
-	box += '<input type = "button" class = "next btn" value="下一篇"/>';
+    box += '<label>跳转</label>';
+    box += '<button class = "preview item btn" >上一处</button>';
+    box += '<button class = "next item btn" >下一处</button>';
     box += '</div>';
 float_content.innerHTML = box;
 
 var css = "@namespace url(http://www.w3.org/1999/xhtml);";
     css += '#float_window{ background-color:#FCFCFC;top:20%;right:10px;position:fixed;padding:4px;border:2px;border-radius:4px;box-shadow:0px 0px 8px #dddddd;z-index:9999;transition: all 0.5s;overflow:hidden;}';
     css += '#float_window *{margin:2px; transition: all 0.5s;}';
-    css += '#float_window .btn{border:1px solid #BBBBBB;border-radius:3px;background-color:#FCFCFC;margin:3px;}';
+    css += '#float_window .btn{border:1px solid #BBBBBB;border-radius:3px;background-color:#FCFCFC;margin:3px;padding:3px;}';
     css += '#float_window #SetPage{width:30px;}';
 	css += '#float_content{background-color:#f7f7f7;padding:1px;border:1px solid rgb(221,221,221);border-radius:4px;overflow:hidden; }';
 	css += '#float_button{background-color:whitesmoke;width:16px;height:16px;position:absolute;top:0px;right:0px;border:1px solid #BBBBBB;border-radius:4px;text-align:center;cursor:pointer;z-Index:9 }';
@@ -73,8 +80,8 @@ var css = "@namespace url(http://www.w3.org/1999/xhtml);";
 loadStyle(css);
 
 float_button.addEventListener('click',showmenu,false);
-$(".preview").addEventListener('click',function(){showPaper(cur_paper_index-1);},false);
-$(".next").addEventListener('click',function(){showPaper(cur_paper_index+1);},false);
+$(".preview.paper").addEventListener('click',function(){showPaper(cur_paper_index-1);},false);
+$(".next.paper").addEventListener('click',function(){showPaper(cur_paper_index+1);},false);
 $(".view").addEventListener('click',function(){
     let targetPage = $("#SetPage").value;
     if(!/^[-,+]?\d+$/.test(targetPage)){
@@ -88,6 +95,12 @@ $(".view").addEventListener('click',function(){
         return;
     }
     showPaper(+targetPage);
+},false);
+$(".preview.item").addEventListener('click',function(){
+    scrollToIndex(cur_item_index - 1);
+},false);
+$(".next.item").addEventListener('click',function(){
+    scrollToIndex(cur_item_index + 1);
 },false);
 
 function showmenu(){
@@ -105,9 +118,20 @@ function showmenu(){
 
 function showPaper(index){
     if(index > 0){
-        let curstyle = $("#ShowUWantStyle").innerText;
-        curstyle = curstyle.replace(/a:not\(\[name="\d*"\]\)\{display:\w+/,'a:not([name="' + index + '"]){display:None;');
-        $("#ShowUWantStyle").innerText = curstyle;
+        let styleField = $("#ShowUWantStyle");
+        curstyle = styleField.innerText.replace(/a:not\(\[name="\d*"\]\)\{display:\w+/,'a:not([name="' + index + '"]){display:None;');
+        styleField.innerText = curstyle;
         cur_paper_index = index;
+        cur_item_index = 0;
+        scrollToIndex(0);
+    }
+}
+
+function scrollToIndex(index) {
+    if(index >= 0){
+        let a = document.querySelectorAll('a[name="' + cur_paper_index + '"]');
+        if(index >= a.length) return;
+        scrollTo(0, a[index].offsetTop-50);
+        cur_item_index = index;
     }
 }
