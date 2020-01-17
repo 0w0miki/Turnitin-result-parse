@@ -45,7 +45,7 @@ float_window.appendChild(float_content);
 var box = '<div id = "score" ></div>';
     box += '<div>';
     box += '<label>查看第</label>';
-    box += '<input id = "SetPage" type="text" maxlength = 3></input>';
+    box += '<input id = "SetPage" type="text" maxlength = 3 value=1></input>';
     box += '<label>篇</label>';
     box += '<button class = "view btn">查看</button>';
     box += '</div>';
@@ -123,6 +123,7 @@ function showPaper(index){
         styleField.innerText = curstyle;
         cur_paper_index = index;
         cur_item_index = 0;
+        $("#SetPage").value = cur_paper_index;
         scrollToIndex(0);
     }
 }
