@@ -31,9 +31,8 @@ There are several ways to load the script in browser.
 
 ### Use Firefox Scratchpad
 If you use Firefox browser, you can use scratchpad to run the script once. That means if you close the page or , you will loose your script
-* Press `F12` and choose `Scratchpad (代码草稿纸)`.
-* Paste the scrit into the scratchpad.
-* Click `run`.
+* Press `F12` and choose `Console`.
+* Paste the scrit into the console and press enter.
 
 ## Start parsing
 
